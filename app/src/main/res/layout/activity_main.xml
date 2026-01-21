@@ -5,47 +5,46 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-
-
+    tools:context=".MainActivity"
+    android:background="@drawable/nu_needs_bg">
 
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="158dp"
+        android:layout_width="204dp"
+        android:layout_height="190dp"
         android:contentDescription="NU Logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.268"
-        app:srcCompat="@drawable/nu_shield_svg" />
+        app:layout_constraintVertical_bias="0.333"
+        app:srcCompat="@drawable/nu_needs_logo" />
+
+    <Button
+        android:id="@+id/BTN_Signup"
+        android:layout_width="113dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@color/button"
+        android:text="Signup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.626" />
 
     <Button
         android:id="@+id/BTN_Login"
         android:layout_width="113dp"
         android:layout_height="45dp"
+        android:backgroundTint="@color/button"
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.491"
-        android:backgroundTint="@color/button"/>
-
-    <Button
-        android:id="@+id/BTN_Signup"
-        android:layout_width="113dp"
-        android:layout_height="45dp"
-        android:text="Signup"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.572"
-        android:backgroundTint="@color/button"/>
+        app:layout_constraintVertical_bias="0.545" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
