@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Finals_Activity3Ramos"
+rootProject.name = "NU Needs"
 include(":app")
  
