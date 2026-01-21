@@ -35,8 +35,8 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
         cancel.setOnClickListener {
-            val goBack = Intent(this, MainActivity::class.java)
-            startActivity(goBack)
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
         signup.setOnClickListener {
             val intent = Intent(this, SignupActivity::class.java)
