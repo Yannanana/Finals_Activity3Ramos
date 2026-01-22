@@ -40,9 +40,8 @@ class SignupActivity : AppCompatActivity() {
             startActivity(intent)
         }
         cancel.setOnClickListener {
-            result.text = ""
-            username.text.clear()
-            password.text.clear()
+            val goBack = Intent(this, MainActivity::class.java)
+            startActivity(goBack)
         }
         login.setOnClickListener {
             val goBack = Intent(this, LoginActivity::class.java)
