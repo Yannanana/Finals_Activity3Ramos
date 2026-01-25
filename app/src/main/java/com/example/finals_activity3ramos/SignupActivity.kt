@@ -5,13 +5,15 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlin.jvm.java
 
 class SignupActivity : AppCompatActivity() {
+    private lateinit var dbHelper: DatabaseHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -21,31 +23,46 @@ class SignupActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val result = findViewById<TextView>(R.id.TV_Result)
+
+        dbHelper = DatabaseHelper(this)
+
+        val firstName = findViewById<EditText>(R.id.ET_First)
+        val lastName = findViewById<EditText>(R.id.ET_Last)
+        val middleName = findViewById<EditText>(R.id.ET_Middle)
         val username = findViewById<EditText>(R.id.ET_Username)
         val password = findViewById<EditText>(R.id.ET_Password)
         val create = findViewById<Button>(R.id.BTN_Create)
         val cancel = findViewById<Button>(R.id.BTN_Cancel)
-        val last = findViewById<EditText>(R.id.ET_Last)
-        val first = findViewById<EditText>(R.id.ET_First)
-        val middle = findViewById<EditText>(R.id.ET_Middle)
         val login = findViewById<TextView>(R.id.TV_Login)
 
         create.setOnClickListener {
+            val fName = firstName.text.toString()
+            val lName = lastName.text.toString()
+            val mName = middleName.text.toString()
             val user = username.text.toString()
             val pass = password.text.toString()
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("message",user)
-            intent.putExtra("password",pass)
-            startActivity(intent)
+
+            if (fName.isEmpty() || lName.isEmpty() || user.isEmpty() || pass.isEmpty()) {
+                Toast.makeText(this, "Please fill required fields", Toast.LENGTH_SHORT).show()
+            } else {
+                val success = dbHelper.addUser(fName, lName, mName, user, pass)
+                if (success) {
+                    Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
         cancel.setOnClickListener {
-            val goBack = Intent(this, MainActivity::class.java)
-            startActivity(goBack)
+            finish()
         }
         login.setOnClickListener {
-            val goBack = Intent(this, LoginActivity::class.java)
-            startActivity(goBack)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
