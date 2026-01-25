@@ -183,10 +183,8 @@ class HomeActivity : AppCompatActivity() {
     private fun setupCategoryClicks() {
         val sidePanel = findViewById<View>(R.id.side_panel)
 
-        // Check if these IDs exist in your activity_home.xml
-        // If not, you need to add them to the side panel TextViews
         val categoryIds = listOf(
-            R.id.category_filing,
+            R.id.activity_home,
             R.id.category_fasteners,
             R.id.category_cutting,
             R.id.category_writing,
