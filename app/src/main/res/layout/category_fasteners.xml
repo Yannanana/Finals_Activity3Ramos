@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    android:id="@+id/category_fasteners"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    android:background="@drawable/nu_needs_homebg">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- ===== YOUR EXISTING HOME SCREEN ===== -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Burger Button -->
+        <ImageView
+            android:id="@+id/burger_button"
+            android:layout_width="38dp"
+            android:layout_height="29dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.042"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.039"
+            app:srcCompat="@drawable/burger_button" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/nu_needs_logo" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ===== SIDE PANEL (Hidden by default) ===== -->
+    <LinearLayout
+        android:id="@+id/side_panel"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:visibility="gone"
+        android:translationX="-250dp">
+
+    </LinearLayout>
+
+</FrameLayout>
