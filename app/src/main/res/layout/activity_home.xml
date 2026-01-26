@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_home"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +8,10 @@
     tools:context=".HomeActivity"
     android:background="@drawable/nu_needs_homebg">
 
-    <!-- ===== YOUR EXISTING HOME SCREEN ===== -->
+    <!-- ===== MAIN HOME SCREEN ===== -->
+
+    <!-- ===== SIDE PANEL ===== -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
@@ -29,22 +31,76 @@
             app:layout_constraintVertical_bias="0.039"
             app:srcCompat="@drawable/burger_button" />
 
+        <!-- Logo -->
         <ImageView
             android:id="@+id/logo"
             android:layout_width="100dp"
             android:layout_height="90dp"
             app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/nu_needs_logo" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/nu_needs_logo" />
+
+        <!-- Checkout Button -->
+
+        <!-- ===== CATEGORY CONTENT AREA ===== -->
+        <!-- This will show when a category is clicked -->
+
+        <ScrollView
+            android:id="@+id/category_content_area"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo">
+
+            <LinearLayout
+                android:id="@+id/content_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp" />
+        </ScrollView>
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/filingg1" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.875"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.183"
+            app:srcCompat="@drawable/ic_plus" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/filing1" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- ===== SIDE PANEL (Hidden by default) ===== -->
     <LinearLayout
         android:id="@+id/side_panel"
         android:layout_width="250dp"
@@ -54,6 +110,140 @@
         android:padding="20dp"
         android:visibility="gone"
         android:translationX="-250dp">
+
+        <!-- Filing & Organization -->
+        <TextView
+            android:id="@+id/category_filing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Filing &amp; Organization"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="5dp" />
+
+        <!-- Fasteners & Binding -->
+        <TextView
+            android:id="@+id/category_fasteners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fasteners &amp; Binding"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="5dp" />
+
+        <!-- Cutting & Measuring -->
+        <TextView
+            android:id="@+id/category_cutting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cutting &amp; Measuring"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="5dp" />
+
+        <!-- Writing & Marking -->
+        <TextView
+            android:id="@+id/category_writing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Writing &amp; Marking"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="5dp" />
+
+        <!-- Ink, Stamp & Adhesives -->
+        <TextView
+            android:id="@+id/category_ink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ink, Stamp &amp; Adhesives"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="5dp" />
+
+        <!-- Paper Products -->
+        <TextView
+            android:id="@+id/category_paper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Paper Products"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E0E0E0"
+            android:layout_marginVertical="5dp" />
+
+        <!-- Tapes -->
+        <TextView
+            android:id="@+id/category_tapes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tapes"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:textColor="#000000"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground" />
 
     </LinearLayout>
 

@@ -141,19 +141,6 @@ class FastenersActivity : AppCompatActivity() {
     }
 
     private fun disableOutOfStockProducts() {
-        // Disable out of stock items
-        val outOfStockItems = listOf(
-            R.id.btn_plus_starter_max,
-            R.id.btn_minus_starter_max,
-            R.id.btn_plus_paper_clip_small,
-            R.id.btn_minus_paper_clip_small
-        )
-
-        outOfStockItems.forEach { id ->
-            val view = findViewById<ImageView>(id)
-            view.isClickable = false
-            view.alpha = 0.3f
-        }
     }
 
     private fun updateCartTotal() {

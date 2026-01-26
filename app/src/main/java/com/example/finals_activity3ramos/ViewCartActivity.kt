@@ -7,7 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.appbar.MaterialToolbar
 
-class CartActivity : AppCompatActivity() {
+class ViewCartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
