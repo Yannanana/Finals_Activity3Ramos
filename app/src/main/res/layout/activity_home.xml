@@ -194,4 +194,10 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:layout_marginTop="710dp"
+        app:srcCompat="@drawable/bottomarea" />
 </FrameLayout>
