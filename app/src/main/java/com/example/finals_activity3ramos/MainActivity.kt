@@ -31,5 +31,16 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SignupActivity::class.java)
             startActivity(intent)
         }
+
+        InventoryManager.addProduct(
+            Product(
+                id = "ARCH_FILE_A4",
+                name = "ARCH FILE FOLDER",
+                stock = 5,
+                initialStock = 5,
+                price = 85.0
+            )
+        )
+        }
+
     }
-}
