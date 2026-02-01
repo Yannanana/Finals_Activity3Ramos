@@ -13,7 +13,8 @@
         android:theme="@style/Theme.Finals_Activity3Ramos" >
         <activity
             android:name=".ViewCartActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".FilingActivity"
             android:exported="false" />
