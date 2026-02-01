@@ -55,36 +55,22 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.163" />
-
-        <TextView
-            android:id="@+id/TV_Today"
-            android:layout_width="164dp"
-            android:layout_height="25dp"
-            android:fontFamily="@font/barlow"
-            android:text="What to we need today?"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.137"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.249" />
+            app:layout_constraintVertical_bias="0.166" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Filings"
             android:layout_width="297dp"
             android:layout_height="58dp"
+            android:backgroundTint="@color/button"
+            android:fontFamily="@font/barlow"
             android:text="Filings and Organization"
             android:textSize="20dp"
-            android:fontFamily="@font/barlow"
+            app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.322"
-            android:backgroundTint="@color/button"
-            app:cornerRadius="0dp"/>
+            app:layout_constraintVertical_bias="0.304" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Fasteners"
@@ -99,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.408" />
+            app:layout_constraintVertical_bias="0.392" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Cutting"
@@ -114,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.494" />
+            app:layout_constraintVertical_bias="0.478" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Writing"
@@ -129,7 +115,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.58" />
+            app:layout_constraintVertical_bias="0.563" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Paper"
@@ -144,7 +130,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.665" />
+            app:layout_constraintVertical_bias="0.649" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BTN_Tapes"
@@ -159,7 +145,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.751" />
+            app:layout_constraintVertical_bias="0.735" />
+
+        <TextView
+            android:id="@+id/TV_Today"
+            android:layout_width="258dp"
+            android:layout_height="47dp"
+            android:fontFamily="@font/barlow"
+            android:text="What to we need today?"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.372"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.252" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

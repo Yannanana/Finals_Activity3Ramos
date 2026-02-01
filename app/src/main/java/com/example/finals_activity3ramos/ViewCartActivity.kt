@@ -26,6 +26,7 @@ class ViewCartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_cart)
 
+
         txtTotal = findViewById(R.id.TV_CartTotal)
         edtPurpose = findViewById(R.id.ET_Purpose)
         recyclerView = findViewById(R.id.RV_CartItems)

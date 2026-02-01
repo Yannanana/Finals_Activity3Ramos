@@ -43,15 +43,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/IV_logo"
-        android:layout_width="match_parent"
-        android:layout_height="179dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/bottomarea" />
+        <ImageView
+            android:id="@+id/IV_logo"
+            android:layout_width="match_parent"
+            android:layout_height="179dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/bottomarea" />
 
         <ImageView
             android:id="@+id/TVcircle"
@@ -83,19 +83,19 @@
             app:layout_constraintVertical_bias="0.907" />
 
         <TextView
-        android:id="@+id/TV_ViewCart"
-        android:layout_width="121dp"
-        android:layout_height="45dp"
-        android:fontFamily="@font/barlow"
-        android:text="View Cart"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.925" />
+            android:id="@+id/TV_ViewCart"
+            android:layout_width="121dp"
+            android:layout_height="45dp"
+            android:fontFamily="@font/barlow"
+            android:text="View Cart"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.925" />
 
         <TextView
             android:id="@+id/TV_CartTotal"
@@ -110,76 +110,76 @@
             app:layout_constraintHorizontal_bias="0.868"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.907" />
+            app:layout_constraintVertical_bias="0.9207" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="5dp"
+        tools:layout_editor_absoluteY="32dp">
+
+
+        <!-- Product box -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="131dp"
+            android:layout_marginTop="230dp"
+            android:background="@drawable/border"
             android:orientation="vertical"
-            tools:layout_editor_absoluteX="5dp"
-            tools:layout_editor_absoluteY="32dp">
+            android:padding="10dp">
 
 
-            <!-- Product box -->
-            <LinearLayout
+            <TextView
+                android:id="@+id/TV_Title2"
                 android:layout_width="wrap_content"
-                android:layout_height="131dp"
-                android:layout_marginTop="230dp"
-                android:background="@drawable/border"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/barlow"
+                android:text="In stock"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
 
-                <TextView
-                    android:id="@+id/TV_Title2"
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="78dp">
+
+
+                <!-- Base product image -->
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/barlow"
-                    android:text="In stock"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/archfilefolder" />
 
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="78dp">
+                <!-- PLUS BUTTON -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="49dp"
+                    android:layout_marginEnd="40dp"
+                    app:srcCompat="@drawable/ic_plus" />
 
 
-                    <!-- Base product image -->
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/archfilefolder" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="49dp"
+                    android:layout_marginEnd="1dp"
+                    app:srcCompat="@drawable/ic_minus" />
 
 
-                    <!-- PLUS BUTTON -->
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="top|end"
-                        android:layout_marginTop="49dp"
-                        android:layout_marginEnd="40dp"
-                        app:srcCompat="@drawable/ic_plus" />
+            </FrameLayout>
 
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="top|end"
-                        android:layout_marginTop="49dp"
-                        android:layout_marginEnd="1dp"
-                        app:srcCompat="@drawable/ic_minus" />
-
-
-                </FrameLayout>
-
-
-            </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
 
 
 
@@ -247,12 +247,7 @@
                 android:textStyle="bold"
                 android:layout_gravity="top|end"
                 android:layout_marginEnd="29dp"
-                android:layout_marginTop="50dp" />
-
-
-
-
-
+                android:layout_marginTop="45dp" />
 
 
         </FrameLayout>
