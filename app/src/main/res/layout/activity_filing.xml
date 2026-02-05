@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/filing"
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/filing"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
     app:cardUseCompatPadding="false">
 
-
-    <!-- BACKGROUND (lowest layer) -->
+    <!-- BACKGROUND IMAGE -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/nu_needs_homebg" />
 
-
+    <!-- LOGO -->
     <ImageView
         android:layout_width="100dp"
         android:layout_height="90dp"
@@ -25,7 +25,7 @@
         android:layout_marginLeft="150dp"
         app:srcCompat="@drawable/nu_needs_logo" />
 
-
+    <!-- HOME BUTTON -->
     <ImageView
         android:id="@+id/BTN_Home"
         android:layout_width="40dp"
@@ -35,225 +35,101 @@
         android:layout_marginLeft="10dp"
         app:srcCompat="@drawable/ic_home" />
 
-
     <!-- FOREGROUND CONTENT -->
-    <!--CART BELOW CONTENT -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/IV_logo"
+        <!-- RecyclerView for products -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RV_Products"
             android:layout_width="match_parent"
-            android:layout_height="179dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/bottomarea" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="180dp"
+            android:paddingBottom="160dp"/>
 
-        <ImageView
-            android:id="@+id/TVcircle"
-            android:layout_width="57dp"
-            android:layout_height="54dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.093"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.924"
-            app:srcCompat="@drawable/baseline_circle_24" />
 
-        <TextView
-            android:id="@+id/TV_CartCount"
-            android:layout_width="25dp"
-            android:layout_height="31dp"
-            android:fontFamily="@font/barlow"
-            android:text="0"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.126"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.907" />
+        <!-- Bottom Bar -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/BottomBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/TV_ViewCart"
-            android:layout_width="121dp"
-            android:layout_height="45dp"
-            android:fontFamily="@font/barlow"
-            android:text="View Cart"
-            android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.925" />
+            <ImageView
+                android:id="@+id/IV_logo"
+                android:layout_width="match_parent"
+                android:layout_height="179dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/bottomarea" />
 
-        <TextView
-            android:id="@+id/TV_CartTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/barlow"
-            android:text="₱0.00"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.9207" />
+            <ImageView
+                android:id="@+id/TVcircle"
+                android:layout_width="57dp"
+                android:layout_height="54dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.093"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.924"
+                app:srcCompat="@drawable/baseline_circle_24" />
+
+            <TextView
+                android:id="@+id/TV_CartCount"
+                android:layout_width="25dp"
+                android:layout_height="31dp"
+                android:fontFamily="@font/barlow"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.126"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.907" />
+
+            <TextView
+                android:id="@+id/TV_ViewCart"
+                android:layout_width="121dp"
+                android:layout_height="45dp"
+                android:fontFamily="@font/barlow"
+                android:text="View Cart"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.925" />
+
+            <TextView
+                android:id="@+id/TV_CartTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/barlow"
+                android:text="₱0.00"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.868"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.9207" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="32dp">
-
-
-        <!-- Product box -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="131dp"
-            android:layout_marginTop="230dp"
-            android:background="@drawable/border"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-
-            <TextView
-                android:id="@+id/TV_Title2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="@font/barlow"
-                android:text="In stock"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="78dp">
-
-
-                <!-- Base product image -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/archfilefolder" />
-
-
-                <!-- PLUS BUTTON -->
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="top|end"
-                    android:layout_marginTop="49dp"
-                    android:layout_marginEnd="40dp"
-                    app:srcCompat="@drawable/ic_plus" />
-
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="top|end"
-                    android:layout_marginTop="49dp"
-                    android:layout_marginEnd="1dp"
-                    app:srcCompat="@drawable/ic_minus" />
-
-
-            </FrameLayout>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-
-    <!-- Product box -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="131dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/border"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-
-        <TextView
-            android:id="@+id/TV_StockStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/barlow"
-            android:text="In stock"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="78dp">
-
-
-            <!-- Base product image -->
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                app:srcCompat="@drawable/archfilefolder" />
-
-
-            <!-- PLUS BUTTON -->
-            <ImageView
-                android:id="@+id/BTN_plus"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="top|end"
-                android:layout_marginTop="49dp"
-                android:layout_marginEnd="40dp"
-                app:srcCompat="@drawable/ic_plus" />
-
-
-            <ImageView
-                android:id="@+id/BTN_minus"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="top|end"
-                android:layout_marginTop="49dp"
-                android:layout_marginEnd="1dp"
-                app:srcCompat="@drawable/ic_minus" />
-
-            <TextView
-                android:id="@+id/TV_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0"
-                android:textSize="18sp"
-                android:fontFamily="@font/barlow"
-                android:textStyle="bold"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="29dp"
-                android:layout_marginTop="45dp" />
-
-
-        </FrameLayout>
-
-
-    </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>

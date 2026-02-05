@@ -46,7 +46,7 @@ class ViewCartActivity : AppCompatActivity() {
         refreshTotal()
 
         btnback.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this, FilingActivity::class.java))
         }
     }
 
