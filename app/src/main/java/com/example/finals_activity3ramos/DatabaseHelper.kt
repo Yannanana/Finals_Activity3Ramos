@@ -17,6 +17,9 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_MIDDLE_NAME = "middle_name"
         private const val COLUMN_USERNAME = "username"
         private const val COLUMN_PASSWORD = "password"
+        private const val COLUMN_ROLE = "role"
+
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -26,7 +29,8 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
                 + COLUMN_LAST_NAME + " TEXT,"
                 + COLUMN_MIDDLE_NAME + " TEXT,"
                 + COLUMN_USERNAME + " TEXT,"
-                + COLUMN_PASSWORD + " TEXT" + ")")
+                + COLUMN_PASSWORD + " TEXT,"
+                + "$COLUMN_ROLE TEXT)")
         db?.execSQL(createTable)
     }
 
@@ -35,7 +39,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         onCreate(db)
     }
 
-    fun addUser(firstName: String, lastName: String, middleName: String, username: String, pass: String): Boolean {
+    fun addUser(firstName: String, lastName: String, middleName: String, username: String, pass: String, role: String): Boolean {
         val db = this.writableDatabase
         val contentValues = ContentValues()
         contentValues.put(COLUMN_FIRST_NAME, firstName)
@@ -43,18 +47,36 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         contentValues.put(COLUMN_MIDDLE_NAME, middleName)
         contentValues.put(COLUMN_USERNAME, username)
         contentValues.put(COLUMN_PASSWORD, pass)
+        contentValues.put(COLUMN_ROLE, role)
+
+
         val result = db.insert(TABLE_USERS, null, contentValues)
+        db.close()
         return result != -1L
     }
 
-    fun checkUser(username: String, pass: String): Boolean {
+
+    fun loginUser(username: String, password: String): String? {
         val db = this.readableDatabase
-        val columns = arrayOf(COLUMN_ID)
-        val selection = "$COLUMN_USERNAME = ? AND $COLUMN_PASSWORD = ?"
-        val selectionArgs = arrayOf(username, pass)
-        val cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null)
-        val count = cursor.count
+
+        val cursor = db.rawQuery(
+            "SELECT role FROM users WHERE username=? AND password=?",
+            arrayOf(username, password)
+        )
+
+        var role: String? = null
+
+        if (cursor.moveToFirst()) {
+            role = cursor.getString(0)
+        }
+
         cursor.close()
-        return count > 0
+        db.close()
+
+        return role
     }
+
+
+
+
 }

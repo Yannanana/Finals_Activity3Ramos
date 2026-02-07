@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -16,7 +15,6 @@ class SignupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_signup)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -35,6 +33,7 @@ class SignupActivity : AppCompatActivity() {
         val cancel = findViewById<Button>(R.id.BTN_Cancel)
         val login = findViewById<TextView>(R.id.TV_Login)
 
+
         create.setOnClickListener {
             val fName = firstName.text.toString()
             val lName = lastName.text.toString()
@@ -45,7 +44,8 @@ class SignupActivity : AppCompatActivity() {
             if (fName.isEmpty() || lName.isEmpty() || user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Please fill required fields", Toast.LENGTH_SHORT).show()
             } else {
-                val success = dbHelper.addUser(fName, lName, mName, user, pass)
+                val role = if (user == "admin@nu.edu.ph") "ADMIN" else "USER"
+                val success = dbHelper.addUser(fName, lName, mName, user, pass, role)
                 if (success) {
                     Toast.makeText(this, "User registered successfully", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, LoginActivity::class.java)
@@ -64,5 +64,6 @@ class SignupActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
     }
 }

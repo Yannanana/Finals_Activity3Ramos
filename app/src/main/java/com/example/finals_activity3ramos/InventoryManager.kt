@@ -1,63 +1,75 @@
-import com.example.finals_activity3ramos.Product
+package com.example.finals_activity3ramos
 
 object InventoryManager {
 
-    private val products = mutableMapOf<String, Product>()
+    val categories = mutableMapOf<String, Category>()
 
     init {
-        // ORIGINAL PRODUCT (kept)
+        // Default category
+        addCategory("Default")
+
+        // Sample product
         addProduct(
             Product(
                 id = "ARCH_FILE_A4",
                 name = "ARCH FILE FOLDER A4, 2 RINGS (3\")",
                 stock = 5,
                 initialStock = 5,
-                price = 85.0
+                price = 85.0,
+                category = "Default"
             )
         )
-
-        // DUMMY PRODUCTS (13 MORE)
-        addProduct(Product("ARCH_FILE_LEGAL", "ARCH FILE FOLDER LEGAL", 5, 5, 95.0))
-        addProduct(Product("EXP_FOLDER_A4", "EXPANDING FOLDER A4", 10, 10, 120.0))
-        addProduct(Product("CLEAR_BOOK_40", "CLEAR BOOK 40 POCKETS", 8, 8, 150.0))
-        addProduct(Product("CLEAR_BOOK_60", "CLEAR BOOK 60 POCKETS", 6, 6, 180.0))
-        addProduct(Product("BOX_FILE", "BOX FILE WITH LOCK", 4, 4, 210.0))
-        addProduct(Product("DOCUMENT_CASE", "DOCUMENT CASE A4", 12, 12, 75.0))
-        addProduct(Product("PLASTIC_ENVELOPE", "PLASTIC ENVELOPE A4", 50, 50, 20.0))
-        addProduct(Product("BROWN_ENVELOPE", "BROWN ENVELOPE A4", 50, 50, 15.0))
-        addProduct(Product("INDEX_DIVIDER", "INDEX DIVIDER A4", 20, 20, 40.0))
-        addProduct(Product("FOLDER_WITH_CLIP", "FOLDER WITH CLIP A4", 15, 15, 55.0))
-        addProduct(Product("HANGING_FOLDER", "HANGING FOLDER", 10, 10, 90.0))
-        addProduct(Product("LEVER_ARCH_FILE", "LEVER ARCH FILE", 7, 7, 160.0))
-        addProduct(Product("FILE_TRAY", "FILE TRAY", 3, 3, 250.0))
     }
 
+    fun generateProductId(): String = "PROD_${System.currentTimeMillis()}"
+
+    // CATEGORY MANAGEMENT
+    fun addCategory(name: String) {
+        if (!categories.containsKey(name)) {
+            categories[name] = Category(name)
+        }
+    }
+
+    fun editCategory(oldName: String, newName: String): Boolean {
+        if (!categories.containsKey(oldName) || categories.containsKey(newName)) return false
+        val category = categories.remove(oldName)!!
+        category.name = newName
+        category.products.forEach { it.category = newName }
+        categories[newName] = category
+        return true
+    }
+
+    fun removeCategory(name: String) {
+        categories.remove(name)
+    }
+
+    fun getAllCategories(): List<Category> = categories.values.toList()
+
+    fun getCategoryByName(name: String): Category? = categories[name]
+
+    // PRODUCT MANAGEMENT
     fun addProduct(product: Product) {
-        products[product.id] = product
+        addCategory(product.category)
+        categories[product.category]?.products?.add(product)
     }
 
-    fun getProduct(productId: String): Product? {
-        return products[productId]
-    }
-    fun getAllProducts(): List<Product> {
-        return products.values.toList()
+    fun addProductToCategory(categoryName: String, product: Product) {
+        product.category = categoryName
+        addProduct(product)
     }
 
+    fun getProductsByCategory(categoryName: String): List<Product> =
+        categories[categoryName]?.products?.toList() ?: listOf()
 
-    fun decreaseStock(productId: String): Boolean {
-        val product = products[productId] ?: return false
-
-        if (product.stock > 0) {
-            product.stock--
-            return true
+    fun editProduct(updated: Product) {
+        val category = categories[updated.category]
+        category?.let {
+            val index = it.products.indexOfFirst { p -> p.id == updated.id }
+            if (index != -1) it.products[index] = updated else it.products.add(updated)
         }
-        return false
     }
 
-    fun increaseStock(productId: String) {
-        val product = products[productId] ?: return
-        if (product.stock < product.initialStock) {
-            product.stock++
-        }
+    fun removeProduct(productId: String) {
+        categories.values.forEach { cat -> cat.products.removeIf { it.id == productId } }
     }
 }

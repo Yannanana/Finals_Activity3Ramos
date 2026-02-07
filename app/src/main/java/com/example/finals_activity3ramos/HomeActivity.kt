@@ -7,9 +7,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 
 class HomeActivity : AppCompatActivity() {
@@ -21,9 +21,13 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        // ✅ Edge-to-edge replacement
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContentView(R.layout.activity_home)
 
+        // Adjust main layout padding for system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -41,8 +45,7 @@ class HomeActivity : AppCompatActivity() {
         val tapes = findViewById<Button>(R.id.BTN_Tapes)
 
         filing.setOnClickListener {
-            val intent = Intent(this, FilingActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, FilingActivity::class.java))
             finish()
         }
 
@@ -52,11 +55,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Burger button click
         burgerButton.setOnClickListener {
-            if (isPanelOpen) {
-                closePanel()
-            } else {
-                openPanel()
-            }
+            if (isPanelOpen) closePanel() else openPanel()
         }
 
         // Panel touch listener for dragging
@@ -66,16 +65,13 @@ class HomeActivity : AppCompatActivity() {
 
         // Logout button - goes to MainActivity
         logoutButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish() // Close current activity
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
 
         // Close panel when clicking outside
         findViewById<View>(R.id.main).setOnClickListener {
-            if (isPanelOpen) {
-                closePanel()
-            }
+            if (isPanelOpen) closePanel()
         }
     }
 
@@ -86,29 +82,19 @@ class HomeActivity : AppCompatActivity() {
                 startX = event.rawX
                 return true
             }
-
             MotionEvent.ACTION_MOVE -> {
                 if (!isPanelOpen) return false
-
                 val deltaX = event.rawX - startX
                 var newX = deltaX
-
                 if (newX > 0) newX = 0f
                 if (newX < -panelWidth) newX = -panelWidth.toFloat()
-
                 view.translationX = newX
                 return true
             }
-
             MotionEvent.ACTION_UP -> {
                 if (!isPanelOpen) return false
-
                 val currentX = view.translationX
-                if (currentX < -panelWidth / 2) {
-                    closePanel()
-                } else {
-                    openPanel()
-                }
+                if (currentX < -panelWidth / 2) closePanel() else openPanel()
                 return true
             }
         }
@@ -130,10 +116,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (isPanelOpen) {
-            closePanel()
-        } else {
-            super.onBackPressed()
-        }
+        if (isPanelOpen) closePanel() else super.onBackPressed()
     }
 }

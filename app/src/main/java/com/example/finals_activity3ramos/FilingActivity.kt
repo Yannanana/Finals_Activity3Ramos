@@ -40,7 +40,10 @@ class FilingActivity : AppCompatActivity() {
         // Get all filing products from InventoryManager
         val filingProducts = InventoryManager.getAllProducts() // implement this function
 
-        val adapter = ProductAdapter(filingProducts) {
+        val adapter = ProductAdapter(
+            products = filingProducts,
+            isAdmin = false
+        ) {
             // Update bottom bar when cart changes
             cartTotal.text = "₱${CartManager.getTotalPrice()}"
             cartCount.text = CartManager.getTotalQuantity().toString()

@@ -1,10 +1,9 @@
-package com.example.finals_activity3ramos
-
 data class Product(
     val id: String,
-    val name: String,
+    var name: String,
     var stock: Int,
-    val initialStock: Int,
-    val price: Double
+    var initialStock: Int,
+    var price: Double,
+    var category: String,
+    var imageUri: String? = null
 )
-

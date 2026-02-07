@@ -3,6 +3,7 @@ package com.example.finals_activity3ramos
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
     private val products: List<Product>,
+    private val isAdmin: Boolean,
     private val onCartUpdated: () -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+
 
     inner class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.IV_ProductImage)
@@ -21,6 +24,10 @@ class ProductAdapter(
         val qty: TextView = view.findViewById(R.id.TV_quantity)
         val plus: ImageView = view.findViewById(R.id.BTN_plus)
         val minus: ImageView = view.findViewById(R.id.BTN_minus)
+        val btnEdit: Button = view.findViewById(R.id.BTN_Edit)
+        val btnDelete: Button = view.findViewById(R.id.BTN_Delete)
+
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -49,6 +56,20 @@ class ProductAdapter(
                 ContextCompat.getColor(holder.itemView.context, android.R.color.holo_red_dark)
             )
         }
+
+        if (isAdmin) {
+            holder.plus.visibility = View.GONE
+            holder.minus.visibility = View.GONE
+            holder.btnEdit.visibility = View.VISIBLE
+            holder.btnDelete.visibility = View.VISIBLE
+        } else {
+            holder.plus.visibility = View.VISIBLE
+            holder.minus.visibility = View.VISIBLE
+            holder.btnEdit.visibility = View.GONE
+            holder.btnDelete.visibility = View.GONE
+        }
+
+
 
 
         // Set product image (example: static for now)
