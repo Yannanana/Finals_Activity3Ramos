@@ -20,6 +20,7 @@ class ManageCategoriesActivity : AppCompatActivity() {
     private lateinit var fabAddCategory: FloatingActionButton
     private var categoryList = mutableListOf<Category>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_categories)
@@ -32,39 +33,60 @@ class ManageCategoriesActivity : AppCompatActivity() {
         loadCategories()
 
         fabAddCategory.setOnClickListener { showAddCategoryDialog() }
+
     }
+
 
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(this)
+
         adapter = CategoryAdapter(
             categoryList,
-            onEdit = { category -> showEditCategoryDialog(category) },
-            onDelete = { category ->
-                if (db.deleteCategory(category.id)) {
+            onEdit = { category ->
+                showEditCategoryDialog(category)
+            },
+            onDelete = { category, position ->
+
+                if (db.categoryHasProducts(category.id)) {
+                    Toast.makeText(
+                        this,
+                        "Delete all products in this category first",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@CategoryAdapter
+                }
+
+                val success = db.deleteCategory(category.id)
+
+                if (success) {
+                    adapter.removeAt(position)   // 🔥 THIS PREVENTS THE CRASH
                     Toast.makeText(this, "Category deleted", Toast.LENGTH_SHORT).show()
-                    loadCategories()
                 } else {
                     Toast.makeText(this, "Failed to delete", Toast.LENGTH_SHORT).show()
                 }
             }
         )
+
         recyclerView.adapter = adapter
     }
+
 
     private fun loadCategories() {
         categoryList.clear()
         val cursor = db.getAllCategories()
         if (cursor.moveToFirst()) {
             do {
-                val category = Category(
-                    id = cursor.getInt(cursor.getColumnIndexOrThrow("category_id")),
-                    name = cursor.getString(cursor.getColumnIndexOrThrow("category_name"))
+                categoryList.add(
+                    Category(
+                        id = cursor.getInt(cursor.getColumnIndexOrThrow("category_id")),
+                        name = cursor.getString(cursor.getColumnIndexOrThrow("category_name"))
+                    )
                 )
-                categoryList.add(category)
             } while (cursor.moveToNext())
         }
         cursor.close()
-        adapter.updateList(categoryList)
+
+        adapter.notifyDataSetChanged()
     }
 
     private fun showAddCategoryDialog() {
@@ -78,6 +100,8 @@ class ManageCategoriesActivity : AppCompatActivity() {
             .create()
 
         dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
 
         btnSave.setOnClickListener {
             val name = etName.text.toString().trim()
@@ -111,6 +135,7 @@ class ManageCategoriesActivity : AppCompatActivity() {
             .create()
 
         dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         btnSave.setOnClickListener {
             val newName = etName.text.toString().trim()
@@ -129,4 +154,9 @@ class ManageCategoriesActivity : AppCompatActivity() {
 
         btnCancel.setOnClickListener { dialog.dismiss() }
     }
+    override fun onResume() {
+        super.onResume()
+        loadCategories()
+    }
+
 }

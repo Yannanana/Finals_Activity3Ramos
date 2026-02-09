@@ -1,5 +1,6 @@
 package com.example.finals_activity3ramos.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.finals_activity3ramos.R
 import com.example.finals_activity3ramos.models.ProductAdmin
 
@@ -36,9 +38,12 @@ class ProductAdminAdapter(
         holder.tvName.text = product.name
         holder.tvDesc.text = "${product.description} • ₱${product.price} • Stock: ${product.stock}"
 
+        if (product.imagePath != null) {
+            Glide.with(holder.itemView.context)
+                .load(Uri.parse(product.imagePath))
+                .into(holder.ivImage)
+        }
 
-        // Optional: set image if using URL or drawable
-        // holder.ivImage.setImage...
 
         holder.imgEdit.setOnClickListener { onEdit(product) }
         holder.imgDelete.setOnClickListener { onDelete(product) }

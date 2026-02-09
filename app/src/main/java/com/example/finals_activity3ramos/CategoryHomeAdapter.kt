@@ -23,6 +23,7 @@ class CategoryHomeAdapter(
         return CategoryViewHolder(view)
     }
 
+
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
         val category = categories[position]
         holder.btnCategory.text = category.name

@@ -7,5 +7,5 @@ data class ProductAdmin(
     val description: String,
     val price: Double,
     val stock: Int,
-    val image: String?
+    val imagePath: String?
 )

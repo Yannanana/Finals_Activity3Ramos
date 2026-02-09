@@ -21,21 +21,9 @@
             android:name=".AdminDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".AddProductActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AdminCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AdminHomeActivity"
-            android:exported="false" />
-        <activity
             android:name=".ViewCartActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".FilingActivity"
-            android:exported="false" />
         <activity
             android:name=".ReceiptActivity"
             android:exported="false" />
@@ -49,8 +37,13 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".UserProductsActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

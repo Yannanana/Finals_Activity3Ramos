@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.finals_activity3ramos.models.ProductAdmin
 
 class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -195,7 +196,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             arrayOf(newStock, productId)
         )
     }
-    fun increaseProductStock(productId: String, quantity: Int) {
+    fun increaseProductStock(productId: Int, quantity: Int) {
         val db = writableDatabase
         db.execSQL(
             "UPDATE $TABLE_PRODUCTS SET $COLUMN_PRODUCT_STOCK = $COLUMN_PRODUCT_STOCK + ? WHERE $COLUMN_PRODUCT_ID = ?",
@@ -246,9 +247,131 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
     }
 
+    fun deleteProduct(productId: Int): Boolean {
+        val db = writableDatabase
+        val rows = db.delete(
+            "products",
+            "product_id = ?",
+            arrayOf(productId.toString())
+        )
+        return rows > 0
+    }
+    fun getAdminProductsByCategory(categoryId: Int): List<ProductAdmin> {
+        val list = mutableListOf<ProductAdmin>()
+        val db = readableDatabase
 
+        val cursor = db.rawQuery(
+            "SELECT * FROM $TABLE_PRODUCTS WHERE $COLUMN_PRODUCT_CAT_ID = ?",
+            arrayOf(categoryId.toString())
+        )
 
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(
+                    ProductAdmin(
+                        id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_ID)),
+                        categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_CAT_ID)),
+                        name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_NAME)),
+                        description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_DESC)),
+                        price = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_PRICE)),
+                        stock = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_STOCK)),
+                        imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_IMAGE))
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
 
+        cursor.close()
+        return list
+    }
+
+    fun updateProduct(
+        productId: Int,
+        name: String,
+        desc: String,
+        price: Double,
+        stock: Int,
+        imagePath: String?
+    ): Boolean {
+        val values = ContentValues().apply {
+            put(COLUMN_PRODUCT_NAME, name)
+            put(COLUMN_PRODUCT_DESC, desc)
+            put(COLUMN_PRODUCT_PRICE, price)
+            put(COLUMN_PRODUCT_STOCK, stock)
+            put(COLUMN_PRODUCT_IMAGE, imagePath)
+        }
+
+        val rows = writableDatabase.update(
+            TABLE_PRODUCTS,
+            values,
+            "$COLUMN_PRODUCT_ID = ?",
+            arrayOf(productId.toString())
+        )
+
+        return rows > 0
+    }
+
+    fun categoryHasProducts(categoryId: Int): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT COUNT(*) FROM products WHERE category_id = ?",
+            arrayOf(categoryId.toString())
+        )
+
+        var hasProducts = false
+        if (cursor.moveToFirst()) {
+            hasProducts = cursor.getInt(0) > 0
+        }
+
+        cursor.close()
+        return hasProducts
+    }
+    fun getCartTotal(userId: Int): Double {
+        val cursor = readableDatabase.rawQuery(
+            """
+        SELECT SUM(p.price * c.quantity)
+        FROM cart c
+        JOIN products p ON c.product_id = p.product_id
+        WHERE c.user_id = ?
+        """,
+            arrayOf(userId.toString())
+        )
+
+        val total = if (cursor.moveToFirst()) cursor.getDouble(0) else 0.0
+        cursor.close()
+        return total
+    }
+    fun getCartItems(userId: Int): MutableList<CartItem> {
+        val items = mutableListOf<CartItem>()
+
+        val cursor = readableDatabase.rawQuery(
+            """
+        SELECT 
+            p.product_id,
+            p.name,
+            p.price,
+            c.quantity
+        FROM cart c
+        JOIN products p ON c.product_id = p.product_id
+        WHERE c.user_id = ?
+        """,
+            arrayOf(userId.toString())
+        )
+
+        while (cursor.moveToNext()) {
+            items.add(
+                CartItem(
+                    productId = cursor.getInt(0),
+                    name = cursor.getString(1),
+                    price = cursor.getDouble(2),
+                    quantity = cursor.getInt(3)
+                )
+            )
+        }
+
+        cursor.close()
+        return items
+    }
 
 
 

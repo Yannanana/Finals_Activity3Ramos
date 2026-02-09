@@ -44,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if (user == adminEmail && pass == password) {
                     startActivity(Intent(this, AdminDashboardActivity::class.java))
+                    finish()
                 } else {
                     val isUserValid = dbHelper.checkUser(user, pass)
                     if (isUserValid) {

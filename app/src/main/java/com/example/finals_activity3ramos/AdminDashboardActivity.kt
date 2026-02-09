@@ -66,6 +66,10 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         // Logout button - goes to MainActivity
         logoutButton.setOnClickListener {
+            getSharedPreferences("USER_SESSION", MODE_PRIVATE)
+                .edit()
+                .clear()
+                .apply()
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish() // Close current activity

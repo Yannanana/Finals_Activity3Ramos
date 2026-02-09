@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 class CartAdapter(
     private val items: MutableList<CartItem>,
     private val dbHelper: DatabaseHelper,
+    private val userId: Int,
     private val onUpdate: () -> Unit
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
@@ -28,14 +29,12 @@ class CartAdapter(
         val item = items[position]
 
         holder.txtItem.text =
-            "${item.quantity}x ${item.name}, ₱${item.price}"
+            "${item.quantity}x ${item.name} - ₱%.2f".format(item.price)
 
         holder.btnDelete.setOnClickListener {
             dbHelper.increaseProductStock(item.productId, item.quantity)
-            repeat(item.quantity) {
-                CartManager.removeItem(item.productId)
+            dbHelper.removeFromCart(userId, item.productId, item.quantity)
 
-            }
             items.removeAt(position)
             notifyItemRemoved(position)
             onUpdate()
@@ -44,3 +43,4 @@ class CartAdapter(
 
     override fun getItemCount() = items.size
 }
+

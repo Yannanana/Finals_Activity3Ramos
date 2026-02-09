@@ -13,13 +13,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.finals_activity3ramos.adapters.CategoryAdapter
 import com.example.finals_activity3ramos.adapters.CategoryHomeAdapter
 import com.example.finals_activity3ramos.models.Category
 import kotlin.collections.mutableListOf
 
 
 class HomeActivity : AppCompatActivity() {
-
+    private var categoryList = mutableListOf<Category>()
+    private lateinit var adapter: CategoryHomeAdapter
+    private lateinit var db: DatabaseHelper
     private var isPanelOpen = false
     private var panelWidth = 0
     private var startX = 0f
@@ -35,21 +38,23 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        db = DatabaseHelper(this)
         val burgerButton = findViewById<ImageView>(R.id.BTN_Burger)
         val sidePanel = findViewById<View>(R.id.side_panel)
         val logoutButton = findViewById<Button>(R.id.BTN_Logout)
         val rv = findViewById<RecyclerView>(R.id.RV_Categories)
         rv.layoutManager = LinearLayoutManager(this)
 
-        val adapter = CategoryHomeAdapter(mutableListOf()) { category ->
+
+        adapter = CategoryHomeAdapter(categoryList) { category ->
             val intent = Intent(this, UserProductsActivity::class.java)
             intent.putExtra("CATEGORY_ID", category.id)
             intent.putExtra("CATEGORY_NAME", category.name)
             startActivity(intent)
         }
         rv.adapter = adapter
-        loadCategories(adapter)
+        loadCategories()
+
 
 
         sidePanel.post {
@@ -83,26 +88,21 @@ class HomeActivity : AppCompatActivity() {
                 closePanel()
             }
         }
+
     }
-
-    private fun loadCategories(adapter: CategoryHomeAdapter) {
-        val db = DatabaseHelper(this)
-        val cursor = db.getAllCategories()  // your DatabaseHelper function
-
-        val categories = mutableListOf<Category>()
+    private fun loadCategories() {
+        categoryList.clear()
+        val cursor = db.getAllCategories()
         if (cursor.moveToFirst()) {
             do {
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("category_id"))
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("category_name"))
-                categories.add(Category(id, name))
+                categoryList.add(Category(id, name))
             } while (cursor.moveToNext())
         }
         cursor.close()
-
-        adapter.updateList(categories)
+        adapter.notifyDataSetChanged()
     }
-
-
     private fun handleTouch(view: View, event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -160,4 +160,9 @@ class HomeActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+    override fun onResume() {
+        super.onResume()
+        loadCategories()
+    }
+
 }

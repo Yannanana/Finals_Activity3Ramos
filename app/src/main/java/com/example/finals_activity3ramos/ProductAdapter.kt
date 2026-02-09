@@ -48,9 +48,17 @@ class ProductAdapter(
             )
         )
 
-        // Example: static image
-        val uri = Uri.parse(product.imagePath) // product.imagePath is a String in DB
-        holder.image.setImageURI(uri)
+        if (!product.imagePath.isNullOrEmpty()) {
+            try {
+                holder.image.setImageURI(Uri.parse(product.imagePath))
+            } catch (e: SecurityException) {
+                holder.image.setImageResource(R.drawable.ic_placeholder)
+            }
+        } else {
+            holder.image.setImageResource(R.drawable.ic_placeholder)
+        }
+
+
 
         // Get cart quantity from DB
         holder.qty.text = dbHelper.getCartQuantity(userId, product.id.toInt()).toString()
@@ -81,11 +89,13 @@ class ProductAdapter(
         }
     }
 
-    override fun getItemCount() = productList.size
+
 
     fun updateList(newList: List<Product>) {
         productList.clear()
         productList.addAll(newList)
         notifyDataSetChanged()
     }
+    override fun getItemCount() = productList.size
+
 }

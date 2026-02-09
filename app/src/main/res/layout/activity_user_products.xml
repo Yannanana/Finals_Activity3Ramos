@@ -102,7 +102,7 @@
                     app:layout_constraintTop_toTopOf="@id/TVcircle"
                     app:layout_constraintVertical_bias="0.333" />
 
-                <TextView
+                <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/TV_ViewCart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

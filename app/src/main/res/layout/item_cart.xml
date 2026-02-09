@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="1x Item, ₱0.00"
-        android:textSize="16sp"
+        android:textSize="20sp"
+        android:fontFamily="@font/barlow"
         android:textColor="#000000" />
 
     <!-- Delete button -->
