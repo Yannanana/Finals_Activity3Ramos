@@ -119,16 +119,6 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return db.insert(TABLE_PRODUCTS, null, values) != -1L
     }
 
-    // --- Cart Methods ---
-    fun addToCart(userId: Int, productId: Int, quantity: Int): Boolean {
-        val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_CART_USER_ID, userId)
-            put(COLUMN_CART_PROD_ID, productId)
-            put(COLUMN_CART_QTY, quantity)
-        }
-        return db.insert(TABLE_CART, null, values) != -1L
-    }
 
     // IMPORTANT: Call this to check if cart is empty before checkout
     fun getCartCount(userId: Int): Int {
@@ -144,4 +134,122 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.writableDatabase
         db.delete(TABLE_CART, "$COLUMN_CART_USER_ID=?", arrayOf(userId.toString()))
     }
+    fun getAllCategories(): Cursor {
+        val db = readableDatabase
+        return db.rawQuery("SELECT * FROM categories", null)
+    }
+
+    fun deleteCategory(id: Int): Boolean {
+        val db = this.writableDatabase
+        return db.delete(TABLE_CATEGORIES, "$COLUMN_CATEGORY_ID=?", arrayOf(id.toString())) > 0
+    }
+
+    fun updateCategory(id: Int, name: String): Boolean {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_CATEGORY_NAME, name)
+        }
+        return db.update(TABLE_CATEGORIES, values, "$COLUMN_CATEGORY_ID=?", arrayOf(id.toString())) > 0
+    }
+
+
+    fun getProductsByCategory(categoryId: Int): MutableList<Product> {
+        val products = mutableListOf<Product>()
+        val db = readableDatabase
+
+        val cursor = db.rawQuery(
+            "SELECT * FROM $TABLE_PRODUCTS WHERE $COLUMN_PRODUCT_CAT_ID = ?",
+            arrayOf(categoryId.toString())
+        )
+
+        while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_ID))
+            val name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_NAME))
+            val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_DESC))
+            val price = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_PRICE))
+            val stock = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_STOCK))
+            val imagePath = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PRODUCT_IMAGE))
+
+            products.add(
+                Product(
+                    id = id,
+                    name = name,
+                    description = description,
+                    price = price,
+                    stock = stock,
+                    imagePath = imagePath
+                )
+            )
+        }
+
+        cursor.close()
+        return products
+    }
+
+
+
+    // Update stock for a product
+    fun updateStock(productId: Int, newStock: Int) {
+        writableDatabase.execSQL(
+            "UPDATE $TABLE_PRODUCTS SET $COLUMN_PRODUCT_STOCK = ? WHERE $COLUMN_PRODUCT_ID = ?",
+            arrayOf(newStock, productId)
+        )
+    }
+    fun increaseProductStock(productId: String, quantity: Int) {
+        val db = writableDatabase
+        db.execSQL(
+            "UPDATE $TABLE_PRODUCTS SET $COLUMN_PRODUCT_STOCK = $COLUMN_PRODUCT_STOCK + ? WHERE $COLUMN_PRODUCT_ID = ?",
+            arrayOf(quantity.toString(), productId)
+        )
+    }
+
+
+    // Get cart quantity for a product
+    fun getCartQuantity(userId: Int, productId: Int): Int {
+        val cursor = readableDatabase.rawQuery(
+            "SELECT $COLUMN_CART_QTY FROM $TABLE_CART WHERE $COLUMN_CART_USER_ID = ? AND $COLUMN_CART_PROD_ID = ?",
+            arrayOf(userId.toString(), productId.toString())
+        )
+        val qty = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return qty
+    }
+
+    // Add to cart (insert or update)
+    fun addToCart(userId: Int, productId: Int, qty: Int) {
+        val currentQty = getCartQuantity(userId, productId)
+        val newQty = currentQty + qty
+        val db = writableDatabase
+        if (currentQty > 0) {
+            val cv = ContentValues().apply { put(COLUMN_CART_QTY, newQty) }
+            db.update(TABLE_CART, cv, "$COLUMN_CART_USER_ID=? AND $COLUMN_CART_PROD_ID=?", arrayOf(userId.toString(), productId.toString()))
+        } else {
+            val cv = ContentValues().apply {
+                put(COLUMN_CART_USER_ID, userId)
+                put(COLUMN_CART_PROD_ID, productId)
+                put(COLUMN_CART_QTY, qty)
+            }
+            db.insert(TABLE_CART, null, cv)
+        }
+    }
+
+    // Remove from cart
+    fun removeFromCart(userId: Int, productId: Int, qty: Int) {
+        val currentQty = getCartQuantity(userId, productId)
+        val newQty = currentQty - qty
+        val db = writableDatabase
+        if (newQty > 0) {
+            val cv = ContentValues().apply { put(COLUMN_CART_QTY, newQty) }
+            db.update(TABLE_CART, cv, "$COLUMN_CART_USER_ID=? AND $COLUMN_CART_PROD_ID=?", arrayOf(userId.toString(), productId.toString()))
+        } else {
+            db.delete(TABLE_CART, "$COLUMN_CART_USER_ID=? AND $COLUMN_CART_PROD_ID=?", arrayOf(userId.toString(), productId.toString()))
+        }
+    }
+
+
+
+
+
+
+
 }

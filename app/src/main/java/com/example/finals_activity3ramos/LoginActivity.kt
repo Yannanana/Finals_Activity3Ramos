@@ -6,27 +6,19 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Make content go edge-to-edge safely
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
+        enableEdgeToEdge()
         setContentView(R.layout.activity_login)
-
-        // Apply padding for system bars
-        val rootLayout = findViewById<ConstraintLayout>(R.id.main)
-        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -47,37 +39,34 @@ class LoginActivity : AppCompatActivity() {
             if (user.isEmpty() || pass.isEmpty()) {
                 Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show()
             } else {
+                val adminEmail = "jglazatin@nu-clark.edu.ph"
+                val password = "1"
 
-                // Check for the special admin account first
-                if (user == "jglazatin@nu-clark.edu.ph" && pass == "admin123") {
-                    Toast.makeText(this, "Admin login successful", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, AdminHomeActivity::class.java))
-                    finish()
-                    return@setOnClickListener
-                }
-                else {
-                    // Regular user login
-                    val role = dbHelper.loginUser(user, pass)
-                    if (role != null) {
-                        // User exists, login successful
-                        Toast.makeText(this, "Login successful", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, UserHomeActivity::class.java))
+                if (user == adminEmail && pass == password) {
+                    startActivity(Intent(this, AdminDashboardActivity::class.java))
+                } else {
+                    val isUserValid = dbHelper.checkUser(user, pass)
+                    if (isUserValid) {
+                        Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, HomeActivity::class.java)
+                        intent.putExtra("message", user)
+                        startActivity(intent)
                         finish()
                     } else {
-                        Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Invalid Username or Password", Toast.LENGTH_SHORT)
+                            .show()
                     }
-
                 }
             }
         }
 
-
         cancel.setOnClickListener {
-            finish() // just go back
+            val goBack = Intent(this, MainActivity::class.java)
+            startActivity(goBack)
         }
-
         signup.setOnClickListener {
-            startActivity(Intent(this, SignupActivity::class.java))
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
     }
 }

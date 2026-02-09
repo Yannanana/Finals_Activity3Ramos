@@ -1,20 +1,23 @@
 package com.example.finals_activity3ramos
 
+import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class ProductAdapter(
-    private val products: List<Product>,
-    private val isAdmin: Boolean,
+    private val context: Context,
+    private var productList: MutableList<Product>,
+    private val userId: Int,
     private val onCartUpdated: () -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
+    private val dbHelper = DatabaseHelper(context)
 
     inner class ProductViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.IV_ProductImage)
@@ -24,10 +27,6 @@ class ProductAdapter(
         val qty: TextView = view.findViewById(R.id.TV_quantity)
         val plus: ImageView = view.findViewById(R.id.BTN_plus)
         val minus: ImageView = view.findViewById(R.id.BTN_minus)
-        val btnEdit: Button = view.findViewById(R.id.BTN_Edit)
-        val btnDelete: Button = view.findViewById(R.id.BTN_Delete)
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -37,63 +36,56 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-        val product = products[position]
+        val product = productList[position]
 
-        // Set product info
         holder.name.text = product.name
         holder.price.text = "₱${product.price}"
-        holder.qty.text = CartManager.getItemQuantity(product.id).toString()
-
-        // Set stock text and color
-        if (product.stock > 0) {
-            holder.stock.text = "In stock (${product.stock})"
-            holder.stock.setTextColor(
-                ContextCompat.getColor(holder.itemView.context, android.R.color.holo_green_dark)
+        holder.stock.text = if (product.stock > 0) "In stock (${product.stock})" else "Out of stock"
+        holder.stock.setTextColor(
+            ContextCompat.getColor(
+                context,
+                if (product.stock > 0) android.R.color.holo_green_dark else android.R.color.holo_red_dark
             )
-        } else {
-            holder.stock.text = "Out of stock"
-            holder.stock.setTextColor(
-                ContextCompat.getColor(holder.itemView.context, android.R.color.holo_red_dark)
-            )
-        }
+        )
 
-        if (isAdmin) {
-            holder.plus.visibility = View.GONE
-            holder.minus.visibility = View.GONE
-            holder.btnEdit.visibility = View.VISIBLE
-            holder.btnDelete.visibility = View.VISIBLE
-        } else {
-            holder.plus.visibility = View.VISIBLE
-            holder.minus.visibility = View.VISIBLE
-            holder.btnEdit.visibility = View.GONE
-            holder.btnDelete.visibility = View.GONE
-        }
+        // Example: static image
+        val uri = Uri.parse(product.imagePath) // product.imagePath is a String in DB
+        holder.image.setImageURI(uri)
 
+        // Get cart quantity from DB
+        holder.qty.text = dbHelper.getCartQuantity(userId, product.id.toInt()).toString()
 
-
-
-        // Set product image (example: static for now)
-        holder.image.setImageResource(R.drawable.archfilefolder) // change dynamically later if needed
-
-        // Plus button
+        // Plus button: add to cart and decrease stock in DB
         holder.plus.setOnClickListener {
-            if (InventoryManager.decreaseStock(product.id)) {
-                CartManager.addItem(product.id, product.name, product.price)
+            if (product.stock > 0) {
+                product.stock--
+                dbHelper.updateStock(product.id.toInt(), product.stock)
+                dbHelper.addToCart(userId, product.id.toInt(), 1)
+                holder.qty.text = dbHelper.getCartQuantity(userId, product.id.toInt()).toString()
                 notifyItemChanged(position)
                 onCartUpdated()
             }
         }
 
-        // Minus button
+        // Minus button: remove from cart and increase stock in DB
         holder.minus.setOnClickListener {
-            if (CartManager.getItemQuantity(product.id) > 0) {
-                CartManager.removeItem(product.id)
-                InventoryManager.increaseStock(product.id)
+            val qtyInCart = dbHelper.getCartQuantity(userId, product.id.toInt())
+            if (qtyInCart > 0) {
+                product.stock++
+                dbHelper.updateStock(product.id.toInt(), product.stock)
+                dbHelper.removeFromCart(userId, product.id.toInt(), 1)
+                holder.qty.text = dbHelper.getCartQuantity(userId, product.id.toInt()).toString()
                 notifyItemChanged(position)
                 onCartUpdated()
             }
         }
     }
 
-    override fun getItemCount() = products.size
+    override fun getItemCount() = productList.size
+
+    fun updateList(newList: List<Product>) {
+        productList.clear()
+        productList.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

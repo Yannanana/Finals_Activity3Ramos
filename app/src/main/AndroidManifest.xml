@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Finals_Activity3Ramos">
         <activity
+            android:name=".ManageProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageCategoriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddProductActivity"
             android:exported="false" />
         <activity

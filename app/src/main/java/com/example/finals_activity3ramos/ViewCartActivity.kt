@@ -10,6 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.finals_activity3ramos.CartItem
+import com.example.finals_activity3ramos.CartManager
+
 
 class ViewCartActivity : AppCompatActivity() {
 
@@ -22,6 +25,9 @@ class ViewCartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dbHelper = DatabaseHelper(this)
+        val cartItemsList: MutableList<CartItem> = CartManager.getItems().toMutableList()
+
         setContentView(R.layout.activity_view_cart)
 
         txtTotal = findViewById(R.id.TV_CartTotal)
@@ -33,7 +39,8 @@ class ViewCartActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         adapter = CartAdapter(
-            CartManager.getItems().toMutableList()
+            items = cartItemsList,
+            dbHelper = dbHelper
         ) {
             refreshTotal()
         }

@@ -11,46 +11,41 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.finals_activity3ramos.adapters.CategoryHomeAdapter
-import com.example.finals_activity3ramos.models.Category
-import kotlin.collections.mutableListOf
 
-
-class HomeActivity : AppCompatActivity() {
+class AdminDashboardActivity : AppCompatActivity() {
 
     private var isPanelOpen = false
     private var panelWidth = 0
     private var startX = 0f
 
     @SuppressLint("ClickableViewAccessibility")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_home)
-
+        setContentView(R.layout.activity_admin_dashboard)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
+        val categoryButton = findViewById<Button>(R.id.BTN_MCategory)
+        val productButton = findViewById<Button>(R.id.BTN_MProduct)
+        val logoutButton = findViewById<Button>(R.id.BTN_Logout)
         val burgerButton = findViewById<ImageView>(R.id.BTN_Burger)
         val sidePanel = findViewById<View>(R.id.side_panel)
-        val logoutButton = findViewById<Button>(R.id.BTN_Logout)
-        val rv = findViewById<RecyclerView>(R.id.RV_Categories)
-        rv.layoutManager = LinearLayoutManager(this)
 
-        val adapter = CategoryHomeAdapter(mutableListOf()) { category ->
-            val intent = Intent(this, UserProductsActivity::class.java)
-            intent.putExtra("CATEGORY_ID", category.id)
-            intent.putExtra("CATEGORY_NAME", category.name)
-            startActivity(intent)
+        categoryButton.setOnClickListener {
+            startActivity(Intent(this, ManageCategoriesActivity::class.java))
         }
-        rv.adapter = adapter
-        loadCategories(adapter)
 
+        productButton.setOnClickListener {
+            startActivity(Intent(this, ManageProductsActivity::class.java))
+        }
+
+        logoutButton.setOnClickListener {
+            finish()
+        }
 
         sidePanel.post {
             panelWidth = sidePanel.width
@@ -65,7 +60,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // Panel touch listener for dragging
         sidePanel.setOnTouchListener { view, event ->
             handleTouch(view, event)
         }
@@ -84,24 +78,6 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun loadCategories(adapter: CategoryHomeAdapter) {
-        val db = DatabaseHelper(this)
-        val cursor = db.getAllCategories()  // your DatabaseHelper function
-
-        val categories = mutableListOf<Category>()
-        if (cursor.moveToFirst()) {
-            do {
-                val id = cursor.getInt(cursor.getColumnIndexOrThrow("category_id"))
-                val name = cursor.getString(cursor.getColumnIndexOrThrow("category_name"))
-                categories.add(Category(id, name))
-            } while (cursor.moveToNext())
-        }
-        cursor.close()
-
-        adapter.updateList(categories)
-    }
-
 
     private fun handleTouch(view: View, event: MotionEvent): Boolean {
         when (event.action) {
@@ -161,3 +137,5 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 }
+
+

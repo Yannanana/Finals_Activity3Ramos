@@ -45,42 +45,60 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="236dp"
-            android:layout_height="45dp"
+            android:layout_width="269dp"
+            android:layout_height="52dp"
             android:fontFamily="@font/barlow"
             android:text="Welcome to NU Needs!"
-            android:textSize="30dp"
+            android:textSize="35dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.166" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RV_Categories"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/TV_Today"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BTN_MCategory"
+            android:layout_width="297dp"
+            android:layout_height="250dp"
+            android:backgroundTint="@color/button"
+            android:fontFamily="@font/barlow"
+            android:text="Manage Category"
+            android:textSize="25dp"
+            app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:padding="16dp"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.413" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BTN_MProduct"
+            android:layout_width="297dp"
+            android:layout_height="250dp"
+            android:backgroundTint="@color/button"
+            android:fontFamily="@font/barlow"
+            android:text="Manage Product"
+            android:textSize="25dp"
+            app:cornerRadius="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.823" />
 
         <TextView
             android:id="@+id/TV_Today"
-            android:layout_width="258dp"
-            android:layout_height="47dp"
+            android:layout_width="323dp"
+            android:layout_height="35dp"
             android:fontFamily="@font/barlow"
-            android:text="What to we need today?"
-            android:textSize="20sp"
+            android:text="What are we managing today?"
+            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.372"
+            app:layout_constraintHorizontal_bias="0.647"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.252" />
+            app:layout_constraintVertical_bias="0.271" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
