@@ -40,7 +40,7 @@
         android:layout_width="190dp"
         android:layout_height="45dp"
         android:backgroundTint="@color/button"
-        android:text="Signup"
+        android:text="Sign up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"

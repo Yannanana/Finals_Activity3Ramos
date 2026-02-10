@@ -2,5 +2,4 @@
     <string name="app_name">NU Needs</string>
     <string name="login">Already have an account? <u>Login!</u> </string>
     <string name="signup">No account yet? <u>Sign up!</u> </string>
-
 </resources>

@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
         dbHelper = DatabaseHelper(this)
 
-        val signup = findViewById<TextView>(R.id.TV_Signup)
+        val signUp = findViewById<TextView>(R.id.TV_SignUp)
         val username = findViewById<EditText>(R.id.ET_Username)
         val password = findViewById<EditText>(R.id.ET_Password)
         val login = findViewById<Button>(R.id.BTN_Login)
@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
                 val goBack = Intent(this, MainActivity::class.java)
                 startActivity(goBack)
             }
-            signup.setOnClickListener {
+            signUp.setOnClickListener {
                 val intent = Intent(this, SignupActivity::class.java)
                 startActivity(intent)
             }

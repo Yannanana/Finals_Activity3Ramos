@@ -91,7 +91,7 @@
         android:backgroundTint="@color/button"/>
 
     <TextView
-        android:id="@+id/TV_Signup"
+        android:id="@+id/TV_SignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/signup"
