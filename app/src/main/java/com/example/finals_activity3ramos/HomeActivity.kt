@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -26,6 +27,9 @@ class HomeActivity : AppCompatActivity() {
     private var isPanelOpen = false
     private var panelWidth = 0
     private var startX = 0f
+    private var userId: Int = -1
+    private var username: String = ""
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +42,16 @@ class HomeActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        userId = intent.getIntExtra("USER_ID", -1)
+        username = intent.getStringExtra("USERNAME") ?: ""
+
+        if (userId == -1) {
+            Toast.makeText(this, "User session error. Please login again.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+
+
         db = DatabaseHelper(this)
         val burgerButton = findViewById<ImageView>(R.id.BTN_Burger)
         val sidePanel = findViewById<View>(R.id.side_panel)
@@ -48,8 +62,11 @@ class HomeActivity : AppCompatActivity() {
 
         adapter = CategoryHomeAdapter(categoryList) { category ->
             val intent = Intent(this, UserProductsActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            intent.putExtra("USERNAME", username)
             intent.putExtra("CATEGORY_ID", category.id)
             intent.putExtra("CATEGORY_NAME", category.name)
+
             startActivity(intent)
         }
         rv.adapter = adapter

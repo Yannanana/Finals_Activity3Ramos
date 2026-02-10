@@ -44,6 +44,11 @@ class ManageProductsActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val back = findViewById<ImageView>(R.id.BTN_Back)
+        back.setOnClickListener {
+            val intent = Intent(this, AdminDashboardActivity::class.java)
+            startActivity(intent)
+        }
 
         fabAddProduct = findViewById(R.id.fabAddProduct)
         fabAddProduct.setOnClickListener {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,19 +18,39 @@ class UserProductsActivity : AppCompatActivity() {
     private lateinit var dbHelper: DatabaseHelper
     private var categoryId: Int = -1
     private var categoryName: String = ""
-    private var userId: Int = 1 // Set this from your logged-in user session
+    private var userId: Int = -1
     private lateinit var tvItemCount: TextView
     private lateinit var tvTotal: TextView
     private lateinit var btnViewCart: TextView
+    private lateinit var username: String
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_products)
 
+        userId = intent.getIntExtra("USER_ID", -1)
         title = categoryName
         categoryId = intent.getIntExtra("CATEGORY_ID", -1)
         categoryName = intent.getStringExtra("CATEGORY_NAME") ?:""
+
+        if (userId == -1 || categoryId == -1 || categoryName.isEmpty()) {
+            Toast.makeText(this, "User session error. Please login again.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+        username = intent.getStringExtra("USERNAME") ?: "Unknown User"
+
+
+        val home = findViewById<ImageView>(R.id.BTN_Home)
+
+        home.setOnClickListener {
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            startActivity(intent)
+            finish()
+        }
 
 
 
@@ -47,9 +68,10 @@ class UserProductsActivity : AppCompatActivity() {
 
         btnViewCart.setOnClickListener {
             val intent = Intent(this, ViewCartActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            intent.putExtra("USERNAME", username)
             startActivity(intent)
         }
-
 
         // Setup RecyclerView
         rvProducts = findViewById(R.id.RV_Products)
@@ -69,13 +91,20 @@ class UserProductsActivity : AppCompatActivity() {
 
     }
     private fun updateCartSummary() {
-        val itemCount = dbHelper.getCartCount(userId)
+        val itemCount = dbHelper.getCartItemTotal(userId)
         val totalAmount = dbHelper.getCartTotal(userId)
 
-        tvItemCount.text = "$itemCount"
+        tvItemCount.text = itemCount.toString()
         tvTotal.text = "₱ %.2f".format(totalAmount)
         btnViewCart.isEnabled = itemCount > 0
     }
+
+
+    override fun onResume() {
+        super.onResume()
+        updateCartSummary()
+    }
+
 
     private fun loadProducts() {
         val products = dbHelper.getProductsByCategory(categoryId)

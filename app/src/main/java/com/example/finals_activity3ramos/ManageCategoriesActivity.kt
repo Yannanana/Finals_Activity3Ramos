@@ -1,9 +1,11 @@
 package com.example.finals_activity3ramos
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,12 @@ class ManageCategoriesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_categories)
 
+        val back = findViewById<ImageView>(R.id.BTN_Back)
+
+        back.setOnClickListener {
+            val intent = Intent(this, AdminDashboardActivity::class.java)
+            startActivity(intent)
+        }
         db = DatabaseHelper(this)
         recyclerView = findViewById(R.id.RV_Categories)
         fabAddCategory = findViewById(R.id.fabAddCategory)

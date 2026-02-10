@@ -21,13 +21,25 @@ class ViewCartActivity : AppCompatActivity() {
     private lateinit var btnCheckout: Button
 
     private lateinit var dbHelper: DatabaseHelper
-    private val userId = 1 // same userId used everywhere
+    private var userId: Int = -1
+    private lateinit var username: String
+
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view_cart)
+
+        userId = intent.getIntExtra("USER_ID", -1)
+
+        if (userId == -1) {
+            Toast.makeText(this, "User session error. Please login again.", Toast.LENGTH_LONG).show()
+            finish()
+            return
+        }
+        username = intent.getStringExtra("USERNAME") ?: "Unknown User"
+
 
         dbHelper = DatabaseHelper(this)
 
@@ -52,13 +64,35 @@ class ViewCartActivity : AppCompatActivity() {
         btnCheckout.setOnClickListener {
             if (adapter.itemCount == 0) {
                 Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show()
-            } else {
-                val intent = Intent(this, ReceiptActivity::class.java)
-                intent.putExtra("PURPOSE", edtPurpose.text.toString())
-                startActivity(intent)
+                return@setOnClickListener
             }
+
+
+            val cartItems = dbHelper.getCartItems(userId)
+            val total = dbHelper.getCartTotal(userId)
+
+
+            val orderId = dbHelper.createOrder(userId, total)
+
+
+            dbHelper.insertOrderItems(orderId, cartItems)
+
+
+            val intent = Intent(this, ReceiptActivity::class.java)
+            intent.putExtra("USER_ID", userId)
+            intent.putExtra("ORDER_ID", orderId)
+            intent.putExtra("USERNAME", username)
+            intent.putExtra("PURPOSE", edtPurpose.text.toString())
+            startActivity(intent)
         }
+
     }
+
+    override fun onResume() {
+        super.onResume()
+        refreshTotal()
+    }
+
 
 
     private fun refreshTotal() {

@@ -85,6 +85,16 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // --- User Methods ---
+    fun getUserId(username: String): Int {
+        val cursor = readableDatabase.rawQuery(
+            "SELECT $COLUMN_USER_ID FROM $TABLE_USERS WHERE $COLUMN_USERNAME = ?",
+            arrayOf(username)
+        )
+        val userId = if (cursor.moveToFirst()) cursor.getInt(0) else -1
+        cursor.close()
+        return userId
+    }
+
     fun addUser(firstName: String, lastName: String, middleName: String, username: String, pass: String): Boolean {
         val db = this.writableDatabase
         val values = ContentValues().apply {
@@ -205,16 +215,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
 
-    // Get cart quantity for a product
-    fun getCartQuantity(userId: Int, productId: Int): Int {
-        val cursor = readableDatabase.rawQuery(
-            "SELECT $COLUMN_CART_QTY FROM $TABLE_CART WHERE $COLUMN_CART_USER_ID = ? AND $COLUMN_CART_PROD_ID = ?",
-            arrayOf(userId.toString(), productId.toString())
-        )
-        val qty = if (cursor.moveToFirst()) cursor.getInt(0) else 0
-        cursor.close()
-        return qty
-    }
+
 
     // Add to cart (insert or update)
     fun addToCart(userId: Int, productId: Int, qty: Int) {
@@ -341,6 +342,37 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         cursor.close()
         return total
     }
+
+    fun getCartQuantity(userId: Int, productId: Int): Int {
+        val cursor = readableDatabase.rawQuery(
+            "SELECT $COLUMN_CART_QTY FROM $TABLE_CART WHERE $COLUMN_CART_USER_ID = ? AND $COLUMN_CART_PROD_ID = ?",
+            arrayOf(userId.toString(), productId.toString())
+        )
+        val qty = if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        cursor.close()
+        return qty
+    }
+
+    fun getCartItemTotal(userId: Int): Int {
+        val cursor = readableDatabase.rawQuery(
+            """
+        SELECT SUM($COLUMN_CART_QTY)
+        FROM $TABLE_CART
+        WHERE $COLUMN_CART_USER_ID = ?
+        """,
+            arrayOf(userId.toString())
+        )
+
+        val totalItems = if (cursor.moveToFirst() && !cursor.isNull(0)) {
+            cursor.getInt(0)
+        } else {
+            0
+        }
+
+        cursor.close()
+        return totalItems
+    }
+
     fun getCartItems(userId: Int): MutableList<CartItem> {
         val items = mutableListOf<CartItem>()
 
@@ -372,6 +404,29 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         cursor.close()
         return items
     }
+    fun createOrder(userId: Int, total: Double): Int {
+        val values = ContentValues().apply {
+            put(COLUMN_ORDER_USER_ID, userId)
+            put(COLUMN_ORDER_DATE, System.currentTimeMillis().toString())
+            put(COLUMN_ORDER_TOTAL, total)
+        }
+
+        val db = writableDatabase
+        return db.insert(TABLE_ORDERS, null, values).toInt()
+    }
+    fun insertOrderItems(orderId: Int, cartItems: List<CartItem>) {
+        val db = writableDatabase
+        cartItems.forEach { item ->
+            val values = ContentValues().apply {
+                put(COLUMN_OI_ORDER_ID, orderId)
+                put(COLUMN_OI_PROD_ID, item.productId)
+                put(COLUMN_OI_QTY, item.quantity)
+                put(COLUMN_OI_PRICE, item.price)
+            }
+            db.insert(TABLE_ORDER_ITEMS, null, values)
+        }
+    }
+
 
 
 

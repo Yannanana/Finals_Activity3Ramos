@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import java.io.File
 
 class ProductAdapter(
     private val context: Context,
@@ -49,11 +51,11 @@ class ProductAdapter(
         )
 
         if (!product.imagePath.isNullOrEmpty()) {
-            try {
-                holder.image.setImageURI(Uri.parse(product.imagePath))
-            } catch (e: SecurityException) {
-                holder.image.setImageResource(R.drawable.ic_placeholder)
-            }
+            Glide.with(context)
+                .load(Uri.parse(product.imagePath))
+                .placeholder(R.drawable.ic_placeholder)
+                .error(R.drawable.ic_placeholder)
+                .into(holder.image)
         } else {
             holder.image.setImageResource(R.drawable.ic_placeholder)
         }

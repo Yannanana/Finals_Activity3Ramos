@@ -48,26 +48,38 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     val isUserValid = dbHelper.checkUser(user, pass)
                     if (isUserValid) {
+                        val userId = dbHelper.getUserId(user)
+
+                        if (userId == -1) {
+                            Toast.makeText(
+                                this,
+                                "User session error. Please login again.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@setOnClickListener
+                        }
+
                         Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
+
                         val intent = Intent(this, HomeActivity::class.java)
-                        intent.putExtra("message", user)
+                        intent.putExtra("USER_ID", dbHelper.getUserId(user))
+                        intent.putExtra("USERNAME", user)
+
                         startActivity(intent)
                         finish()
-                    } else {
-                        Toast.makeText(this, "Invalid Username or Password", Toast.LENGTH_SHORT)
-                            .show()
+
                     }
                 }
             }
-        }
 
-        cancel.setOnClickListener {
-            val goBack = Intent(this, MainActivity::class.java)
-            startActivity(goBack)
-        }
-        signup.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
-            startActivity(intent)
+            cancel.setOnClickListener {
+                val goBack = Intent(this, MainActivity::class.java)
+                startActivity(goBack)
+            }
+            signup.setOnClickListener {
+                val intent = Intent(this, SignupActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
