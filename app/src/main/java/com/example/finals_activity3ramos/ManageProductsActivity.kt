@@ -92,16 +92,22 @@ class ManageProductsActivity : AppCompatActivity() {
             spinnerCategories.setSelection(0)
         }
 
-        spinnerCategories.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                selectedCategoryId = categoryList[position].id
-                loadProducts(selectedCategoryId)
+        spinnerCategories.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val category = categoryList[position]
+                    selectedCategoryId = category.id
+                    loadProducts(selectedCategoryId)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
     }
 
     private fun setupRecyclerView() {
@@ -247,17 +253,19 @@ class ManageProductsActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        setupSpinner()
         if (selectedCategoryId != -1) {
             loadProducts(selectedCategoryId)
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1001 && resultCode == RESULT_OK) {
-            selectedImageUri = data?.data
+        if (resultCode == RESULT_OK && data?.data != null) {
+            selectedImageUri = data.data
+
         }
     }
+
 
 
 
